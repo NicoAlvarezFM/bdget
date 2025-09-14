@@ -3,10 +3,12 @@ name: Build and Push Docker Image
 on: 
   push:
     branches:
-      - main   
+      - main
+      - develop   # 🔹 también corre en develop
   pull_request:
     branches:
       - main
+      - develop   # 🔹 también chequea PRs hacia develop
 
 jobs:
   build:
@@ -67,7 +69,6 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-
       # Paso 6: Conectarse a EC2 y desplegar el contenedor
       - name: SSH commands to deploy
         run: |
@@ -81,4 +82,3 @@ jobs:
             # Iniciar el contenedor
             docker run -d --name my-app -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/my-app:latest
           EOF
-  
